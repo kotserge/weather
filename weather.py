@@ -8,16 +8,16 @@ config = configparser.ConfigParser()
 config.read(f"{sys.argv[1]}/config.ini")
 
 dict_weather_group_icon = {
-    200: "",
-    300: "",
-    500: "",
-    600: "",
-    700: "",
-    800: ["", ""],
-    801: ["", ""],
-    802: "",
-    803: "",
-    804: "",
+    200: "",
+    300: "",
+    500: "",
+    600: "",
+    700: "",
+    800: ["", ""],
+    801: ["", ""],
+    802: "",
+    803: "",
+    804: "",
 }
 
 URL = "https://api.openweathermap.org/data/2.5/weather?lat={}&lon={}&units={}&exclude=minutely,hourly,daily,alerts&appid={}"
@@ -32,26 +32,20 @@ url_formatted = URL.format(
 try:
     current = requests.get(url_formatted).json()
 except:
-    print("")
+    print("")
     exit()
 
 if current["cod"] != 200:
-    print("")
+    print("")
     exit()
 
 # get weather icon
 weather_id = current["weather"][0]["id"]
 weather_icon = dict_weather_group_icon.get(weather_id, (weather_id // 100) * 100)
 
-# Dirty hack
-if isinstance(weather_icon, int):
-    weather_icon = dict_weather_group_icon.get((weather_id // 100) * 100, "")
-
 if isinstance(weather_icon, list):
     weather_icon = (
-        weather_icon[0]
-        if current["sys"]["sunrise"] < current["dt"] < current["sys"]["sunset"]
-        else weather_icon[1]
+        weather_icon[0] if current["sys"]["sunrise"] < current["dt"] < current["sys"]["sunset"] else weather_icon[1]
     )
 
 # get unit
