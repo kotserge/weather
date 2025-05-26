@@ -42,6 +42,8 @@ if current["cod"] != 200:
 # get weather icon
 weather_id = current["weather"][0]["id"]
 weather_icon = dict_weather_group_icon.get(weather_id, (weather_id // 100) * 100)
+if isinstance(weather_icon, int):
+    weather_icon = dict_weather_group_icon.get((weather_id // 100) * 100, 'ERROR')
 
 if isinstance(weather_icon, list):
     weather_icon = (
